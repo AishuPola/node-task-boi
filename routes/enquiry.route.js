@@ -8,6 +8,6 @@ import {
 const router = express.Router();
 router.get("/details", getAllEnquiresCtrl);
 router.post("/details", createDetailsCtr);
-router.put("/details/:id", updateEnquiryByIdCtrl);
+router.patch("/details/:id", updateEnquiryByIdCtrl);
 router.delete("/details/:id", deleteEnquiryByIdCtrl);
 export default router;
