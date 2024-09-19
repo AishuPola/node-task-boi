@@ -6,13 +6,15 @@ import {
   updateEnquiryById,
 } from "../services/enquiry.service.js";
 import { v4 as uuidv4 } from "uuid";
-import { sendBookingConfirmation } from "../services/email.service.js";
+import {
+  sendBookingConfirmation,
+  sendPackageSelectionConfirmation,
+} from "../services/email.service.js";
 
 async function getAllEnquiresCtrl(request, response) {
   try {
     response.send(await getAllEnquires());
   } catch (error) {
-    //call back funtion we have req and res
     response.send("enquires  not loaded");
   }
 }
@@ -30,7 +32,7 @@ async function createDetailsCtr(request, response) {
 
     response.status(201).send(addDetails);
   } catch (error) {
-    response.status(500).send("failed to add details or send email"); //something bad happend on serve is 500
+    response.status(500).send("failed to add details or send email");
   }
 }
 
@@ -55,10 +57,16 @@ async function updateEnquiryByIdCtrl(request, response) {
 
   try {
     const existingEnquiry = await getEnquiryById(id);
+    console.log(existingEnquiry.data.email);
 
     if (existingEnquiry.data) {
       const result = await updateEnquiryById(id, updatedDetails);
       response.status(200).send(result);
+
+      await sendPackageSelectionConfirmation(
+        existingEnquiry.data.email,
+        updatedDetails.package
+      );
     } else {
       response.status(404).send({ msg: "Enquiry not found" });
     }
