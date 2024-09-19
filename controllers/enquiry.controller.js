@@ -1,6 +1,16 @@
-import { createDetails } from "../services/enquiry.service.js";
+import { createDetails, getAllEnquires } from "../services/enquiry.service.js";
 import { v4 as uuidv4 } from "uuid";
 import { sendBookingConfirmation } from "../services/email.service.js";
+
+async function getAllEnquiresCtrl(request, response) {
+  try {
+    response.send(await getAllEnquires());
+  } catch (error) {
+    //call back funtion we have req and res
+    response.send("movies not loaded");
+  }
+}
+
 async function createDetailsCtr(request, response) {
   const data = request.body;
   const addDetails = {
@@ -18,4 +28,4 @@ async function createDetailsCtr(request, response) {
   }
 }
 
-export { createDetailsCtr };
+export { createDetailsCtr, getAllEnquiresCtrl };
