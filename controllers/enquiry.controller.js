@@ -1,4 +1,9 @@
-import { createDetails, getAllEnquires } from "../services/enquiry.service.js";
+import {
+  createDetails,
+  getAllEnquires,
+  getEnquiryById,
+  deleteEnquiryById,
+} from "../services/enquiry.service.js";
 import { v4 as uuidv4 } from "uuid";
 import { sendBookingConfirmation } from "../services/email.service.js";
 
@@ -7,7 +12,7 @@ async function getAllEnquiresCtrl(request, response) {
     response.send(await getAllEnquires());
   } catch (error) {
     //call back funtion we have req and res
-    response.send("movies not loaded");
+    response.send("enquires  not loaded");
   }
 }
 
@@ -28,4 +33,20 @@ async function createDetailsCtr(request, response) {
   }
 }
 
-export { createDetailsCtr, getAllEnquiresCtrl };
+async function deleteEnquiryByIdCtrl(request, response) {
+  const { id } = request.params;
+  // console.log(id)
+  try {
+    const res = await getEnquiryById(id);
+    if (res.data) {
+      await deleteEnquiryById(id);
+      response.send({ msg: "deleted successfully", data: res.data });
+    } else {
+      response.status(404).send({ msg: "details of the person not found" });
+    }
+  } catch (error) {
+    response.status(500).send("deleted failed");
+  }
+}
+
+export { createDetailsCtr, getAllEnquiresCtrl, deleteEnquiryByIdCtrl };

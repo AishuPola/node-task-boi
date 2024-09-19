@@ -7,4 +7,11 @@ async function createDetails(addDetails) {
 async function getAllEnquires() {
   return (await Enquires.scan.go()).data;
 }
-export { createDetails, getAllEnquires };
+async function deleteEnquiryById(id) {
+  await Enquires.delete({ id: id }).go();
+}
+
+async function getEnquiryById(id) {
+  return await Enquires.get({ id: id }).go();
+}
+export { createDetails, getAllEnquires, deleteEnquiryById, getEnquiryById };
