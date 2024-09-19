@@ -38,6 +38,9 @@ const Enquires = new Entity(
       timestamp: {
         type: "string",
       },
+      package: {
+        type: "string",
+      },
     },
     indexes: {
       primary: {

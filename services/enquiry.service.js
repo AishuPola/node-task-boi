@@ -14,4 +14,13 @@ async function deleteEnquiryById(id) {
 async function getEnquiryById(id) {
   return await Enquires.get({ id: id }).go();
 }
-export { createDetails, getAllEnquires, deleteEnquiryById, getEnquiryById };
+async function updateEnquiryById(id, updatedDetails) {
+  return await Enquires.update({ id }).set(updatedDetails).go();
+}
+export {
+  createDetails,
+  getAllEnquires,
+  deleteEnquiryById,
+  getEnquiryById,
+  updateEnquiryById,
+};

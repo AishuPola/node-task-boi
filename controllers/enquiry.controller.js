@@ -3,6 +3,7 @@ import {
   getAllEnquires,
   getEnquiryById,
   deleteEnquiryById,
+  updateEnquiryById,
 } from "../services/enquiry.service.js";
 import { v4 as uuidv4 } from "uuid";
 import { sendBookingConfirmation } from "../services/email.service.js";
@@ -48,5 +49,27 @@ async function deleteEnquiryByIdCtrl(request, response) {
     response.status(500).send("deleted failed");
   }
 }
+async function updateEnquiryByIdCtrl(request, response) {
+  const { id } = request.params;
+  const updatedDetails = request.body;
 
-export { createDetailsCtr, getAllEnquiresCtrl, deleteEnquiryByIdCtrl };
+  try {
+    const existingEnquiry = await getEnquiryById(id);
+
+    if (existingEnquiry.data) {
+      const result = await updateEnquiryById(id, updatedDetails);
+      response.status(200).send(result);
+    } else {
+      response.status(404).send({ msg: "Enquiry not found" });
+    }
+  } catch (error) {
+    response.status(500).send("Failed to update enquiry");
+  }
+}
+
+export {
+  createDetailsCtr,
+  getAllEnquiresCtrl,
+  deleteEnquiryByIdCtrl,
+  updateEnquiryByIdCtrl,
+};
