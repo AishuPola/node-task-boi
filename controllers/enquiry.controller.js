@@ -52,6 +52,7 @@ async function deleteEnquiryByIdCtrl(request, response) {
     response.status(500).send("deleted failed");
   }
 }
+
 async function updateEnquiryByIdCtrl(request, response) {
   const { id } = request.params;
   const updatedDetails = request.body;
@@ -61,18 +62,22 @@ async function updateEnquiryByIdCtrl(request, response) {
     console.log(existingEnquiry.data.email);
 
     if (existingEnquiry.data) {
-      const result = await updateEnquiryById(id, updatedDetails);
-      response.status(200).send(result);
+      await updateEnquiryById(id, updatedDetails);
+
+      const updatedEnquiry = await getEnquiryById(id);
 
       await sendPackageSelectionConfirmation(
         existingEnquiry.data.email,
         updatedDetails.package,
         existingEnquiry.data.fullname
       );
+
+      response.status(200).send(updatedEnquiry);
     } else {
       response.status(404).send({ msg: "Enquiry not found" });
     }
   } catch (error) {
+    console.error("Error updating enquiry:", error);
     response.status(500).send("Failed to update enquiry");
   }
 }
