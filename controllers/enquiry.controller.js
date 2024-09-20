@@ -28,7 +28,8 @@ async function createDetailsCtr(request, response) {
   };
   try {
     await createDetails(addDetails);
-    await sendBookingConfirmation(addDetails.email);
+    console.log(addDetails.fullname);
+    await sendBookingConfirmation(addDetails.email, addDetails.fullname);
 
     response.status(201).send(addDetails);
   } catch (error) {
@@ -65,7 +66,8 @@ async function updateEnquiryByIdCtrl(request, response) {
 
       await sendPackageSelectionConfirmation(
         existingEnquiry.data.email,
-        updatedDetails.package
+        updatedDetails.package,
+        existingEnquiry.data.fullname
       );
     } else {
       response.status(404).send({ msg: "Enquiry not found" });

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export async function sendBookingConfirmation(email) {
+export async function sendBookingConfirmation(email, name) {
   try {
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -19,11 +19,18 @@ export async function sendBookingConfirmation(email) {
     });
 
     let mailOptions = {
-      from: `"Your Company" <${process.env.EMAIL_USER}>`,
+      from: `"Proclink" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: "Booking Confirmation",
-      text: "Your booking was successful!",
-      html: "<b>Your booking was successful!</b>",
+      subject: "Your Booking Confirmation is Successful!",
+      text: `Hi ${name},\n\nThank you for reaching out to us! 🎉\nWe're excited to confirm that your booking has been successfully received.\n\nOur team will be in touch shortly to provide further assistance. If you have any questions or need help, feel free to contact us at support@yourdomain.com. We're here for you!\n\nLooking forward to helping you,\nThe Proclink Team`,
+      html: `
+          <p>Hi <b>${name}</b>,</p>
+          <p>Thank you for reaching out to us! 🎉<br>
+          We're excited to confirm that your booking has been successfully received.</p>
+          <p>Our team will be in touch shortly to provide further assistance. If you have any questions or need help, feel free to contact us at <a href="mailto:support@yourdomain.com">paishwarya2003@gmail.com</a>. We're here for you!</p>
+          <p>Looking forward to helping you,<br>
+          <b>The Proclink Team</b></p>
+        `,
     };
 
     await transporter.sendMail(mailOptions);
@@ -33,10 +40,15 @@ export async function sendBookingConfirmation(email) {
   }
 }
 
-export async function sendPackageSelectionConfirmation(email, packageName) {
+export async function sendPackageSelectionConfirmation(
+  email,
+  packageName,
+  name
+) {
   try {
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
+      //   host: "smtp.office365.com",
       port: 587,
       secure: false,
       auth: {
@@ -52,8 +64,9 @@ export async function sendPackageSelectionConfirmation(email, packageName) {
       from: `"Your Company" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "Package Selection Confirmation",
-      text: `You have successfully chosen the ${packageName} package.`,
-      html: `<b>You have successfully chosen the ${packageName} package.</b>`,
+      text: `Hi ${name} , You have successfully chosen the ${packageName} package.`,
+      html: ` <p>Hi <b>${name}</b>,</p>
+      <b>You have successfully chosen the ${packageName} package.</b>`,
     };
 
     await transporter.sendMail(mailOptions);
