@@ -8,6 +8,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import {
   sendBookingConfirmation,
+  sendingUserDetailsToAdmin,
   sendPackageSelectionConfirmation,
 } from "../services/email.service.js";
 
@@ -28,8 +29,10 @@ async function createDetailsCtr(request, response) {
   };
   try {
     await createDetails(addDetails);
+    console.log(addDetails);
     console.log(addDetails.fullname);
     await sendBookingConfirmation(addDetails.email, addDetails.fullname);
+    await sendingUserDetailsToAdmin(addDetails);
 
     response.status(201).send(addDetails);
   } catch (error) {

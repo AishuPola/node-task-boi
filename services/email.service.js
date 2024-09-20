@@ -2,19 +2,19 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
 dotenv.config();
-
+//sending mail to user.
 export async function sendBookingConfirmation(email, name) {
   try {
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 587, // Use port 587 for TLS
-      secure: false, // Use false since TLS (not SSL)
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
       tls: {
-        rejectUnauthorized: false, // Optional, to bypass strict TLS certificate checking
+        rejectUnauthorized: false,
       },
     });
 
@@ -34,7 +34,61 @@ export async function sendBookingConfirmation(email, name) {
     };
 
     await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully");
+    console.log("Email sent successfully to the user");
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
+}
+
+//sending mail to admins
+export async function sendingUserDetailsToAdmin(details) {
+  try {
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    let mailOptions = {
+      from: `"Proclink" <${process.env.EMAIL_USER}>`,
+      to: `aishwarya.pola@proclink.com`,
+      subject: `the new user  details are:`,
+      text: ` 
+      
+     New user details:
+
+ID: ${details.id}
+Full Name: ${details.fullname}
+Phone Number: ${details.phone_number}
+Registered On: ${details.timestamp}
+State: ${details.state}
+Email: ${details.email}
+Company: ${details.company}
+`,
+      html: `
+<h3>New user details:</h3>
+<ul>
+  <li><strong>ID:</strong> ${details.id}</li>
+  <li><strong>Full Name:</strong> ${details.fullname}</li>
+  <li><strong>Phone Number:</strong> ${details.phone_number}</li>
+  <li><strong>Registered On:</strong> ${details.timestamp}</li>
+  <li><strong>State:</strong> ${details.state}</li>
+  <li><strong>Email:</strong> ${details.email}</li>
+  <li><strong>Company:</strong> ${details.company}</li>
+</ul>
+
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully to the admin");
   } catch (error) {
     console.error("Error sending email:", error);
   }
