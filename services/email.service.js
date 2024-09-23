@@ -58,7 +58,7 @@ export async function sendingUserDetailsToAdmin(details) {
 
     let mailOptions = {
       from: `"Proclink" <${process.env.EMAIL_USER}>`,
-      to: `aishwarya.pola@proclink.com`,
+      to: `ksrinu.43@gmail.com`,
       subject: `the new user  details are:`,
       text: ` 
       
