@@ -27,7 +27,7 @@ export async function sendBookingConfirmation(email, name) {
           <p>Hi <b>${name}</b>,</p>
           <p>Thank you for reaching out to us! 🎉<br>
           We're excited to confirm that your booking has been successfully received.</p>
-          <p>Our team will be in touch shortly to provide further assistance. If you have any questions or need help, feel free to contact us at <a href="mailto:support@yourdomain.com">paishwarya2003@gmail.com</a>. We're here for you!</p>
+          <p>Our team will be in touch shortly to provide further assistance. If you have any questions or need help, feel free to contact us at <a href="mailto:support@yourdomain.com">ksrinu.43@gmail.com</a>. We're here for you!</p>
           <p>Looking forward to helping you,<br>
           <b>The Proclink Team</b></p>
         `,
