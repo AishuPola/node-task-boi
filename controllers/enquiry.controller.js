@@ -10,6 +10,7 @@ import {
   sendBookingConfirmation,
   sendingUserDetailsToAdmin,
   sendPackageSelectionConfirmation,
+  sendingUpdatePackageToAdmin,
 } from "../services/email.service.js";
 
 async function getAllEnquiresCtrl(request, response) {
@@ -62,18 +63,19 @@ async function updateEnquiryByIdCtrl(request, response) {
 
   try {
     const existingEnquiry = await getEnquiryById(id);
-    console.log(existingEnquiry.data.email);
 
     if (existingEnquiry.data) {
       await updateEnquiryById(id, updatedDetails);
 
       const updatedEnquiry = await getEnquiryById(id);
+      console.log(updatedEnquiry);
 
       await sendPackageSelectionConfirmation(
         existingEnquiry.data.email,
         updatedDetails.package,
         existingEnquiry.data.fullname
       );
+      await sendingUpdatePackageToAdmin(updatedEnquiry.data);
 
       response.status(200).send(updatedEnquiry);
     } else {

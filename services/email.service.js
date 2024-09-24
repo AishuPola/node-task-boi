@@ -59,10 +59,10 @@ export async function sendingUserDetailsToAdmin(details) {
     let mailOptions = {
       from: `"Proclink" <${process.env.EMAIL_USER}>`,
       to: `aishwarya.pola@proclink.com`,
-      subject: `the new user  details are:`,
-      text: ` 
-      
-     New user details:
+      subject: `New User Registration Details`,
+      text: `Dear Admin,
+
+A new user has registered. Below are the details:
 
 ID: ${details.id}
 Full Name: ${details.fullname}
@@ -71,9 +71,15 @@ Registered On: ${details.timestamp}
 State: ${details.state}
 Email: ${details.email}
 Company: ${details.company}
+
+Please review the user's information and follow up if necessary.
+
+Best regards,
+Proclink Team
 `,
       html: `
-<h3>New user details:</h3>
+<p>Dear Admin,</p>
+<p>A new user has registered. Below are the details:</p>
 <ul>
   <li><strong>ID:</strong> ${details.id}</li>
   <li><strong>Full Name:</strong> ${details.fullname}</li>
@@ -83,14 +89,16 @@ Company: ${details.company}
   <li><strong>Email:</strong> ${details.email}</li>
   <li><strong>Company:</strong> ${details.company}</li>
 </ul>
-
+<p>Please review the user's information and follow up if necessary.</p>
+<p>Best regards,</p>
+<p><strong>Proclink Team</strong></p>
       `,
     };
 
     await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully to the admin");
+    console.log("User details email sent successfully to the admin");
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error sending user details email:", error);
   }
 }
 
@@ -102,7 +110,6 @@ export async function sendPackageSelectionConfirmation(
   try {
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      //   host: "smtp.office365.com",
       port: 587,
       secure: false,
       auth: {
@@ -115,17 +122,93 @@ export async function sendPackageSelectionConfirmation(
     });
 
     let mailOptions = {
-      from: `"Your Company" <${process.env.EMAIL_USER}>`,
+      from: `"Proclink" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: "Package Selection Confirmation",
-      text: `Hi ${name} , You have successfully chosen the ${packageName} package.`,
-      html: ` <p>Hi <b>${name}</b>,</p>
-      <b>You have successfully chosen the ${packageName} package.</b>`,
+      subject: "Confirmation of Package Selection",
+      text: `Dear ${name},
+
+We are pleased to inform you that you have successfully selected the ${packageName} package.
+
+Thank you for choosing our services. If you have any questions or need further assistance, feel free to contact us.
+
+Best regards,
+Proclink Team
+`,
+      html: `
+<p>Dear <strong>${name}</strong>,</p>
+<p>We are pleased to inform you that you have successfully selected the <strong>${packageName}</strong> package.</p>
+<p>Thank you for choosing our services. If you have any questions or need further assistance, feel free to contact us.</p>
+<p>Best regards,</p>
+<p><strong>Proclink Team</strong></p>
+      `,
     };
 
     await transporter.sendMail(mailOptions);
     console.log("Package selection email sent successfully");
   } catch (error) {
     console.error("Error sending package selection email:", error);
+  }
+}
+
+export async function sendingUpdatePackageToAdmin(details) {
+  try {
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    let mailOptions = {
+      from: `"Proclink" <${process.env.EMAIL_USER}>`,
+      to: `aishwarya.pola@proclink.com`,
+      subject: `Updated User Details and Selected Package`,
+      text: ` 
+Dear Admin,
+
+The user ${details.fullname} has selected the following package: ${details.package}.
+
+Please find the updated details of the user below:
+
+- ID: ${details.id}
+- Full Name: ${details.fullname}
+- Phone Number: ${details.phone_number}
+- Registration Date: ${details.timestamp}
+- State: ${details.state}
+- Email: ${details.email}
+- Company: ${details.company}
+
+Best regards,
+Proclink Team
+`,
+      html: `
+<h3>Updated User Details</h3>
+<p>Dear Admin,</p>
+<p>The user <strong>${details.fullname}</strong> has selected the following package: <strong>${details.package}</strong>.</p>
+<p>Please find the updated details of the user below:</p>
+<ul>
+  <li><strong>ID:</strong> ${details.id}</li>
+  <li><strong>Full Name:</strong> ${details.fullname}</li>
+  <li><strong>Phone Number:</strong> ${details.phone_number}</li>
+  <li><strong>Registration Date:</strong> ${details.timestamp}</li>
+  <li><strong>State:</strong> ${details.state}</li>
+  <li><strong>Email:</strong> ${details.email}</li>
+  <li><strong>Company:</strong> ${details.company}</li>
+</ul>
+<p>Best regards,</p>
+<p><strong>Proclink Team</strong></p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully to the admin");
+  } catch (error) {
+    console.error("Error sending email:", error);
   }
 }
