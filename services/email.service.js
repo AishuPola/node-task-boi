@@ -72,6 +72,7 @@ State: ${details.state}
 Email: ${details.email}
 Company: ${details.company}
 
+
 Please review the user's information and follow up if necessary.
 
 Best regards,
@@ -94,7 +95,6 @@ Proclink Team
 <p><strong>Proclink Team</strong></p>
       `,
     };
-
     await transporter.sendMail(mailOptions);
     console.log("User details email sent successfully to the admin");
   } catch (error) {
@@ -210,5 +210,68 @@ Proclink Team
     console.log("Email sent successfully to the admin");
   } catch (error) {
     console.error("Error sending email:", error);
+  }
+}
+
+export async function sendingDetailsToAdminAfterPackage(details) {
+  try {
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    let mailOptions = {
+      from: `"Proclink" <${process.env.EMAIL_USER}>`,
+      to: `aishwarya.pola@proclink.com`,
+      subject: `New User Registration Details`,
+      text: `Dear Admin,
+
+A new user has registered. Below are the details:
+
+ID: ${details.id}
+Full Name: ${details.fullname}
+Phone Number: ${details.phone_number}
+Registered On: ${details.timestamp}
+State: ${details.state}
+Email: ${details.email}
+Company: ${details.company}
+package:${details.package}
+
+
+Please review the user's information and follow up if necessary.
+
+Best regards,
+Proclink Team
+`,
+      html: `
+<p>Dear Admin,</p>
+<p>A new user has registered. Below are the details:</p>
+<ul>
+  <li><strong>ID:</strong> ${details.id}</li>
+  <li><strong>Full Name:</strong> ${details.fullname}</li>
+  <li><strong>Phone Number:</strong> ${details.phone_number}</li>
+  <li><strong>Registered On:</strong> ${details.timestamp}</li>
+  <li><strong>State:</strong> ${details.state}</li>
+  <li><strong>Email:</strong> ${details.email}</li>
+  <li><strong>Company:</strong> ${details.company}</li>
+    <li><strong>package:</strong> ${details.package}</li>
+</ul>
+<p>Please review the user's information and follow up if necessary.</p>
+<p>Best regards,</p>
+<p><strong>Proclink Team</strong></p>
+      `,
+    };
+    await transporter.sendMail(mailOptions);
+    console.log("User details email sent successfully to the admin");
+  } catch (error) {
+    console.error("Error sending user details email:", error);
   }
 }
