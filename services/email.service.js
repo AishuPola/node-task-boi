@@ -275,3 +275,47 @@ Proclink Team
     console.error("Error sending user details email:", error);
   }
 }
+
+export async function sendConfirmationToUserAfterPackageSelection(
+  email,
+  name,
+  packageName
+) {
+  try {
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    let mailOptions = {
+      from: `"Proclink" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "Your Booking Confirmation is Successful!",
+      text: `Hi ${name},\n\nThank you for reaching out to us! 
+      
+      🎉\nWe're excited to confirm that your booking has been successfully received.\n\nOur team will be in touch shortly to provide further assistance. If you have any questions or need help, feel free to contact us at support@yourdomain.com. We're here for you!\n\nLooking forward to helping you,\nThe Proclink Team`,
+      html: `
+          <p>Hi <b>${name}</b>,</p>
+        
+          We're excited to confirm that your booking has been successfully received.</p>
+            <p>Thank you for choosing ${packageName} 🎉<br>
+          <p>Our team will be in touch shortly to provide further assistance. If you have any questions or need help, feel free to contact us at <a href="mailto:support@yourdomain.com">ksrinu.43@gmail.com</a>. We're here for you!</p>
+          <p>Looking forward to helping you,<br>
+          <b>The Proclink Team</b></p>
+        `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully to the user");
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
+}

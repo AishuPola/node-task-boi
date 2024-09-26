@@ -12,6 +12,7 @@ import {
   sendPackageSelectionConfirmation,
   sendingUpdatePackageToAdmin,
   sendingDetailsToAdminAfterPackage,
+  sendConfirmationToUserAfterPackageSelection,
 } from "../services/email.service.js";
 
 async function getAllEnquiresCtrl(request, response) {
@@ -33,16 +34,21 @@ async function createDetailsCtr(request, response) {
     await createDetails(addDetails);
     console.log(addDetails);
     console.log(addDetails.fullname);
-    await sendBookingConfirmation(addDetails.email, addDetails.fullname);
 
     if (data.package) {
       await sendingDetailsToAdminAfterPackage(addDetails);
-      await sendPackageSelectionConfirmation(
+      // await sendPackageSelectionConfirmation(
+      //   data.email,
+      //   data.package,
+      //   data.fullname
+      // );
+      await sendConfirmationToUserAfterPackageSelection(
         data.email,
-        data.package,
-        data.fullname
+        data.fullname,
+        data.package
       );
     } else {
+      await sendBookingConfirmation(addDetails.email, addDetails.fullname);
       await sendingUserDetailsToAdmin(addDetails);
     }
     response.status(201).send(addDetails);
