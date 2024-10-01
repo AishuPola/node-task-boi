@@ -7,12 +7,9 @@ import {
 } from "../services/enquiry.service.js";
 import { v4 as uuidv4 } from "uuid";
 import {
-  sendBookingConfirmation,
   sendingUserDetailsToAdmin,
-  sendPackageSelectionConfirmation,
   sendingUpdatePackageToAdmin,
   sendingDetailsToAdminAfterPackage,
-  sendConfirmationToUserAfterPackageSelection,
 } from "../services/email.service.js";
 
 async function getAllEnquiresCtrl(request, response) {
@@ -37,18 +34,14 @@ async function createDetailsCtr(request, response) {
 
     if (data.package) {
       await sendingDetailsToAdminAfterPackage(addDetails);
-      // await sendPackageSelectionConfirmation(
+
+      // await sendConfirmationToUserAfterPackageSelection(
       //   data.email,
-      //   data.package,
-      //   data.fullname
+      //   data.fullname,
+      //   data.package
       // );
-      await sendConfirmationToUserAfterPackageSelection(
-        data.email,
-        data.fullname,
-        data.package
-      );
     } else {
-      await sendBookingConfirmation(addDetails.email, addDetails.fullname);
+      // await sendBookingConfirmation(addDetails.email, addDetails.fullname);
       await sendingUserDetailsToAdmin(addDetails);
     }
     response.status(201).send(addDetails);
@@ -86,11 +79,11 @@ async function updateEnquiryByIdCtrl(request, response) {
       const updatedEnquiry = await getEnquiryById(id);
       console.log(updatedEnquiry);
 
-      await sendPackageSelectionConfirmation(
-        existingEnquiry.data.email,
-        updatedDetails.package,
-        existingEnquiry.data.fullname
-      );
+      // await sendPackageSelectionConfirmation(
+      //   existingEnquiry.data.email,
+      //   updatedDetails.package,
+      //   existingEnquiry.data.fullname
+      // );
       await sendingUpdatePackageToAdmin(updatedEnquiry.data);
 
       response.status(200).send(updatedEnquiry);
