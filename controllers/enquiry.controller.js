@@ -16,7 +16,7 @@ const getISTTime = () => {
     timeZone: "Asia/Kolkata",
     hour12: false,
   };
-  return new Intl.DateTimeFormat("en-IN", {
+  const formattedDate = new Intl.DateTimeFormat("en-IN", {
     ...options,
     year: "numeric",
     month: "2-digit",
@@ -25,6 +25,7 @@ const getISTTime = () => {
     minute: "2-digit",
     second: "2-digit",
   }).format(new Date());
+  return `${formattedDate} IST`;
 };
 
 export async function getAllEnquiresCtrl(req, res) {
