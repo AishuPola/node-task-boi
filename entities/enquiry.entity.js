@@ -22,8 +22,7 @@ const enquirySchema = new mongoose.Schema({
     required: true,
   },
   timestamp: {
-    type: Date,
-    default: Date.now,
+    type: String,
   },
   package: {
     type: String,

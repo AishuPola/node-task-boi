@@ -11,6 +11,21 @@ import {
   sendingUpdatePackageToAdmin,
   sendingDetailsToAdminAfterPackage,
 } from "../services/email.service.js";
+const getISTTime = () => {
+  const options = {
+    timeZone: "Asia/Kolkata",
+    hour12: false,
+  };
+  return new Intl.DateTimeFormat("en-IN", {
+    ...options,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).format(new Date());
+};
 
 export async function getAllEnquiresCtrl(req, res) {
   try {
@@ -26,7 +41,7 @@ export async function createDetailsCtr(req, res) {
   const addDetails = {
     ...data,
     id: uuidv4(),
-    timestamp: new Date(),
+    timestamp: getISTTime(), // Get timestamp in IST
   };
   try {
     const createdEnquiry = await createDetails(addDetails);
