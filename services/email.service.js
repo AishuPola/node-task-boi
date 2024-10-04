@@ -58,7 +58,7 @@ export async function sendingUserDetailsToAdmin(details) {
 
     let mailOptions = {
       from: `"Proclink" <${process.env.EMAIL_USER}>`,
-      to: `aishwarya.pola@proclink.com`,
+      to: `ayushmaan.singh@procstat.com`,
       subject: `New User Registration Details`,
       text: `Dear Admin,
 
@@ -76,7 +76,7 @@ Company: ${details.company}
 Please review the user's information and follow up if necessary.
 
 Best regards,
-Proclink Team
+ProcStat Team
 `,
       html: `
 <p>Dear Admin,</p>
@@ -92,7 +92,7 @@ Proclink Team
 </ul>
 <p>Please review the user's information and follow up if necessary.</p>
 <p>Best regards,</p>
-<p><strong>Proclink Team</strong></p>
+<p><strong>ProcStat Team</strong></p>
       `,
     };
     await transporter.sendMail(mailOptions);
@@ -167,7 +167,7 @@ export async function sendingUpdatePackageToAdmin(details) {
 
     let mailOptions = {
       from: `"Proclink" <${process.env.EMAIL_USER}>`,
-      to: `aishwarya.pola@proclink.com`,
+      to: `ayushmaan.singh@procstat.com`,
       subject: `Updated User Details and Selected Package`,
       text: ` 
 Dear Admin,
@@ -185,7 +185,7 @@ Please find the updated details of the user below:
 - Company: ${details.company}
 
 Best regards,
-Proclink Team
+ProcStat Team
 `,
       html: `
 <h3>Updated User Details</h3>
@@ -202,7 +202,7 @@ Proclink Team
   <li><strong>Company:</strong> ${details.company}</li>
 </ul>
 <p>Best regards,</p>
-<p><strong>Proclink Team</strong></p>
+<p><strong>ProcStat Team</strong></p>
       `,
     };
 
@@ -230,7 +230,7 @@ export async function sendingDetailsToAdminAfterPackage(details) {
 
     let mailOptions = {
       from: `"Proclink" <${process.env.EMAIL_USER}>`,
-      to: `aishwarya.pola@proclink.com`,
+      to: `ayushmaan.singh@procstat.com`,
       subject: `New User Registration Details`,
       text: `Dear Admin,
 
@@ -249,7 +249,7 @@ package:${details.package}
 Please review the user's information and follow up if necessary.
 
 Best regards,
-Proclink Team
+ProcStat Team
 `,
       html: `
 <p>Dear Admin,</p>
@@ -266,7 +266,7 @@ Proclink Team
 </ul>
 <p>Please review the user's information and follow up if necessary.</p>
 <p>Best regards,</p>
-<p><strong>Proclink Team</strong></p>
+<p><strong>ProcStat Team</strong></p>
       `,
     };
     await transporter.sendMail(mailOptions);
@@ -306,7 +306,7 @@ Proclink Team
 //           <p>Hi <b>${name}</b>,</p>
 //           We're excited to confirm that your booking for the <b>${packageName}</b> package has been successfully received.</p>
 //             <p>Thank you for choosing <b>${packageName} 😊</b><br>
-//           <p>Our team will be in touch shortly to provide further assistance. If you have any questions or need help, feel free to contact us at <a href="mailto:support@yourdomain.com">ksrinu.43@gmail.com</a>. We're here for you!</p>
+//           <p>Our team will be in touch shortly to provide further assistance. If you have any questions or need help, feel free to contact us at <a href="mailto:support@yourdomain.com">ayushmaan.singh@procstat.com</a>. We're here for you!</p>
 //           <p>Looking forward to helping you,<br>
 //           <b>The Proclink Team</b></p>
 //       `,
