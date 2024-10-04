@@ -12,93 +12,55 @@ import {
   sendingDetailsToAdminAfterPackage,
 } from "../services/email.service.js";
 
-async function getAllEnquiresCtrl(request, response) {
+export async function getAllEnquiresCtrl(req, res) {
   try {
-    response.send(await getAllEnquires());
+    const enquires = await getAllEnquires();
+    res.json(enquires);
   } catch (error) {
-    response.send("enquires  not loaded");
+    res.status(500).json({ error: "Failed to load enquiries" });
   }
 }
 
-async function createDetailsCtr(request, response) {
-  const data = request.body;
+export async function createDetailsCtr(req, res) {
+  const data = req.body;
   const addDetails = {
     ...data,
     id: uuidv4(),
-    timestamp: new Date().toISOString(),
+    timestamp: new Date(),
   };
   try {
-    await createDetails(addDetails);
-    console.log(addDetails);
-    console.log(addDetails.fullname);
-
+    const createdEnquiry = await createDetails(addDetails);
     if (data.package) {
       await sendingDetailsToAdminAfterPackage(addDetails);
-
-      // await sendConfirmationToUserAfterPackageSelection(
-      //   data.email,
-      //   data.fullname,
-      //   data.package
-      // );
     } else {
-      // await sendBookingConfirmation(addDetails.email, addDetails.fullname);
-      await sendingUserDetailsToAdmin(addDetails);
+      await sendingUserDetailsToAdmin(createdEnquiry);
     }
-    response.status(201).send(addDetails);
+    res.json(createdEnquiry);
   } catch (error) {
-    response.status(500).send("failed to add details or send email");
+    res.status(500).json({ error: "Failed to create enquiry" });
   }
 }
 
-async function deleteEnquiryByIdCtrl(request, response) {
-  const { id } = request.params;
-  // console.log(id)
+export async function deleteEnquiryByIdCtrl(req, res) {
   try {
-    const res = await getEnquiryById(id);
-    if (res.data) {
-      await deleteEnquiryById(id);
-      response.send({ msg: "deleted successfully", data: res.data });
-    } else {
-      response.status(404).send({ msg: "details of the person not found" });
-    }
+    const id = req.params.id;
+    const deleted = await deleteEnquiryById(id);
+    if (!deleted) return res.status(404).json({ error: "Enquiry not found" });
+    res.json(deleted);
   } catch (error) {
-    response.status(500).send("deleted failed");
+    res.status(500).json({ error: "Failed to delete enquiry" });
   }
 }
 
-async function updateEnquiryByIdCtrl(request, response) {
-  const { id } = request.params;
-  const updatedDetails = request.body;
-
+export async function updateEnquiryByIdCtrl(req, res) {
   try {
-    const existingEnquiry = await getEnquiryById(id);
+    const id = req.params.id;
+    const updated = await updateEnquiryById(id, req.body);
 
-    if (existingEnquiry.data) {
-      await updateEnquiryById(id, updatedDetails);
-
-      const updatedEnquiry = await getEnquiryById(id);
-      console.log(updatedEnquiry);
-
-      // await sendPackageSelectionConfirmation(
-      //   existingEnquiry.data.email,
-      //   updatedDetails.package,
-      //   existingEnquiry.data.fullname
-      // );
-      await sendingUpdatePackageToAdmin(updatedEnquiry.data);
-
-      response.status(200).send(updatedEnquiry);
-    } else {
-      response.status(404).send({ msg: "Enquiry not found" });
-    }
+    if (!updated) return res.status(404).json({ error: "Enquiry not found" });
+    sendingUpdatePackageToAdmin(updated);
+    res.json(updated);
   } catch (error) {
-    console.error("Error updating enquiry:", error);
-    response.status(500).send("Failed to update enquiry");
+    res.status(500).json({ error: "Failed to update enquiry" });
   }
 }
-
-export {
-  createDetailsCtr,
-  getAllEnquiresCtrl,
-  deleteEnquiryByIdCtrl,
-  updateEnquiryByIdCtrl,
-};

@@ -58,7 +58,7 @@ export async function sendingUserDetailsToAdmin(details) {
 
     let mailOptions = {
       from: `"Proclink" <${process.env.EMAIL_USER}>`,
-      to: `ayushmaan.singh@procstat.com`,
+      to: `aishwarya.pola@proclink.com`,
       subject: `New User Registration Details`,
       text: `Dear Admin,
 
@@ -167,7 +167,7 @@ export async function sendingUpdatePackageToAdmin(details) {
 
     let mailOptions = {
       from: `"Proclink" <${process.env.EMAIL_USER}>`,
-      to: `ayushmaan.singh@procstat.com`,
+      to: `aishwarya.pola@proclink.com`,
       subject: `Updated User Details and Selected Package`,
       text: ` 
 Dear Admin,
@@ -230,7 +230,7 @@ export async function sendingDetailsToAdminAfterPackage(details) {
 
     let mailOptions = {
       from: `"Proclink" <${process.env.EMAIL_USER}>`,
-      to: `ayushmaan.singh@procstat.com`,
+      to: `aishwarya.pola@proclink.com`,
       subject: `New User Registration Details`,
       text: `Dear Admin,
 

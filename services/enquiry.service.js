@@ -1,26 +1,22 @@
-import { Enquires } from "../entities/enquiry.entity.js";
+import Enquiry from "../entities/enquiry.entity.js";
 
-async function createDetails(addDetails) {
-  await Enquires.create(addDetails).go();
-}
-
-async function getAllEnquires() {
-  return (await Enquires.scan.go()).data;
-}
-async function deleteEnquiryById(id) {
-  await Enquires.delete({ id: id }).go();
+export async function createDetails(addDetails) {
+  const enquiry = new Enquiry(addDetails);
+  return await enquiry.save();
 }
 
-async function getEnquiryById(id) {
-  return await Enquires.get({ id: id }).go();
+export async function getAllEnquires() {
+  return await Enquiry.find();
 }
-async function updateEnquiryById(id, updatedDetails) {
-  return await Enquires.update({ id }).set(updatedDetails).go();
+
+export async function deleteEnquiryById(id) {
+  return await Enquiry.findByIdAndDelete(id);
 }
-export {
-  createDetails,
-  getAllEnquires,
-  deleteEnquiryById,
-  getEnquiryById,
-  updateEnquiryById,
-};
+
+export async function getEnquiryById(id) {
+  return await Enquiry.findById(id);
+}
+
+export async function updateEnquiryById(id, updatedDetails) {
+  return await Enquiry.findByIdAndUpdate(id, updatedDetails, { new: true });
+}

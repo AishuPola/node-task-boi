@@ -1,63 +1,35 @@
-import { Entity } from "electrodb"; // ORM(Object relation mapping) // Adapter on adapter
+import mongoose from "mongoose";
 
-import { client } from "../util/dbconnection.js";
-
-const Enquires = new Entity(
-  {
-    model: {
-      entity: "Enquires",
-      version: "1",
-      service: "EnquiryService",
-    },
-    attributes: {
-      id: {
-        type: "string",
-      },
-      fullname: {
-        type: "string",
-        required: true,
-      },
-      phone_number: {
-        type: "number",
-        required: true,
-      },
-      email: {
-        type: "string",
-        required: true,
-      },
-
-      state: {
-        type: "string",
-        required: true,
-      },
-
-      company: {
-        type: "string",
-        required: true,
-      },
-      timestamp: {
-        type: "string",
-      },
-      package: {
-        type: "string",
-      },
-    },
-    indexes: {
-      primary: {
-        pk: {
-          // highlight-next-line
-          field: "pk",
-          facets: ["id"],
-        },
-        sk: {
-          // highlight-next-line
-          field: "sk",
-          facets: [],
-        },
-      },
-    },
+const enquirySchema = new mongoose.Schema({
+  fullname: {
+    type: String,
+    required: true,
   },
-  { client, table: "enquires" }
-);
+  phone_number: {
+    type: Number,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  state: {
+    type: String,
+    required: true,
+  },
+  company: {
+    type: String,
+    required: true,
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
+  package: {
+    type: String,
+  },
+});
 
-export { Enquires };
+const Enquiry = mongoose.model("Enquiry", enquirySchema);
+
+export default Enquiry;
