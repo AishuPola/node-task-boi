@@ -150,7 +150,6 @@ ProcStat Team
 //     console.error("Error sending package selection email:", error);
 //   }
 // }
-
 export async function sendingUpdatePackageToAdmin(details) {
   try {
     let transporter = nodemailer.createTransport({
