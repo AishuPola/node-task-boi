@@ -1,3 +1,5 @@
+import Joi from "joi";
+
 import {
   createDetails,
   getAllEnquires,
@@ -11,6 +13,26 @@ import {
   sendingUpdatePackageToAdmin,
   sendingDetailsToAdminAfterPackage,
 } from "../services/email.service.js";
+
+const packageTypes = {
+  GOLD: "gold",
+  DIAMOND: "diamond",
+  PLATINUM: "platinum",
+};
+const enquiryValidationSchema = Joi.object({
+  fullname: Joi.string().min(3).max(50).required(),
+  phone_number: Joi.number()
+    .integer()
+    .min(1000000000)
+    .max(9999999999)
+    .required(),
+  email: Joi.string().email().required(),
+  state: Joi.string().min(2).required(),
+  company: Joi.string().min(2).required(),
+  package: Joi.string()
+    .valid(...Object.values(packageTypes), ...Object.keys(packageTypes))
+    .optional(),
+});
 const getISTTime = () => {
   const options = {
     timeZone: "Asia/Kolkata",
@@ -38,11 +60,18 @@ export async function getAllEnquiresCtrl(req, res) {
 }
 
 export async function createDetailsCtr(req, res) {
-  const data = req.body;
+  const { error, value } = enquiryValidationSchema.validate(req.body);
+
+  if (error) {
+    // Return a 400 status code with the validation error message
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
+  const data = value;
   const addDetails = {
     ...data,
     id: uuidv4(),
-    timestamp: getISTTime(), // Get timestamp in IST
+    timestamp: getISTTime(),
   };
   try {
     const createdEnquiry = await createDetails(addDetails);
