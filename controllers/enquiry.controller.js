@@ -33,6 +33,12 @@ const enquiryValidationSchema = Joi.object({
     .valid(...Object.values(packageTypes), ...Object.keys(packageTypes))
     .optional(),
 });
+
+// Partial validation schema for PATCH
+const partialEnquiryValidationSchema = enquiryValidationSchema.fork(
+  ["fullname", "phone_number", "email", "state", "company", "package"],
+  (schema) => schema.optional()
+);
 const getISTTime = () => {
   const options = {
     timeZone: "Asia/Kolkata",
@@ -63,7 +69,6 @@ export async function createDetailsCtr(req, res) {
   const { error, value } = enquiryValidationSchema.validate(req.body);
 
   if (error) {
-    // Return a 400 status code with the validation error message
     return res.status(400).json({ error: error.details[0].message });
   }
 
@@ -98,9 +103,13 @@ export async function deleteEnquiryByIdCtrl(req, res) {
 }
 
 export async function updateEnquiryByIdCtrl(req, res) {
+  const { error, value } = partialEnquiryValidationSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
   try {
     const id = req.params.id;
-    const updated = await updateEnquiryById(id, req.body);
+    const updated = await updateEnquiryById(id, value);
 
     if (!updated) return res.status(404).json({ error: "Enquiry not found" });
     sendingUpdatePackageToAdmin(updated);
