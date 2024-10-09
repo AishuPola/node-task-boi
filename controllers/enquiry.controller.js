@@ -34,7 +34,6 @@ const enquiryValidationSchema = Joi.object({
     .optional(),
 });
 
-// Partial validation schema for PATCH to update user package
 const partialEnquiryValidationSchema = enquiryValidationSchema.fork(
   ["fullname", "phone_number", "email", "state", "company", "package"],
   (schema) => schema.optional()
