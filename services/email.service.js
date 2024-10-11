@@ -1,7 +1,36 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-
+import AWS from "aws-sdk";
 dotenv.config();
+
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION, // e.g., 'us-east-1'
+});
+const ses = new AWS.SES({
+  apiVersion: "2010-12-01",
+  region: process.env.AWS_REGION, // e.g., 'us-east-1'
+});
+const transporter = nodemailer.createTransport({
+  SES: { ses, aws: AWS },
+});
+// export async function sendEmail() {
+//   const mailOptions = {
+//     from: "aishwarya.pola@proclink.com", // Must be a verified email in AWS SES
+//     to: "srujan.pothu@proclink.com",
+//     subject: "Test Email from AWS SES",
+//     text: "This is a test email sent using Nodemailer and AWS SES!",
+//     html: "<p>This is a test email sent using <strong>Nodemailer</strong> and <strong>AWS SES</strong>!</p>",
+//   };
+
+//   try {
+//     const info = await transporter.sendMail(mailOptions);
+//     console.log("Email sent:", info);
+//   } catch (error) {
+//     console.error("Error sending email:", error);
+//   }
+// }
 //sending mail to user.
 // export async function sendBookingConfirmation(email, name) {
 //   try {
@@ -43,23 +72,9 @@ dotenv.config();
 //sending mail to admins
 export async function sendingUserDetailsToAdmin(details) {
   try {
-    let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
-
     let mailOptions = {
       from: `"ProcStat" <${process.env.EMAIL_USER}>`,
-      to: `ayushmaan.singh@procstat.com`,
+      to: process.env.EMAIL_RECEIVER,
       subject: `New User Registration Details`,
       text: `Dear Admin,
 
@@ -152,22 +167,9 @@ ProcStat Team
 // }
 export async function sendingUpdatePackageToAdmin(details) {
   try {
-    let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
-
     let mailOptions = {
       from: `"ProcStat" <${process.env.EMAIL_USER}>`,
-      to: `ayushmaan.singh@procstat.com`,
+      to: process.env.EMAIL_RECEIVER,
       subject: `Updated User Details and Selected Package`,
       text: ` 
 Dear Admin,
@@ -215,22 +217,9 @@ ProcStat Team
 
 export async function sendingDetailsToAdminAfterPackage(details) {
   try {
-    let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
-
     let mailOptions = {
       from: `"ProcStat" <${process.env.EMAIL_USER}>`,
-      to: `ayushmaan.singh@procstat.com`,
+      to: process.env.EMAIL_RECEIVER,
       subject: `New User Registration Details`,
       text: `Dear Admin,
 

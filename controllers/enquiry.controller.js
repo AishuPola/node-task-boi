@@ -12,6 +12,7 @@ import {
   sendingUserDetailsToAdmin,
   sendingUpdatePackageToAdmin,
   sendingDetailsToAdminAfterPackage,
+  // sendEmail,
 } from "../services/email.service.js";
 
 const packageTypes = {
@@ -80,6 +81,7 @@ export async function createDetailsCtr(req, res) {
   try {
     const createdEnquiry = await createDetails(addDetails);
     if (data.package) {
+      // sendEmail();
       await sendingDetailsToAdminAfterPackage(addDetails);
     } else {
       await sendingUserDetailsToAdmin(createdEnquiry);
