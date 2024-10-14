@@ -31,6 +31,7 @@ const transporter = nodemailer.createTransport({
 //     console.error("Error sending email:", error);
 //   }
 // }
+
 //sending mail to user.
 // export async function sendBookingConfirmation(email, name) {
 //   try {
